@@ -13,27 +13,18 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(0)
     const { searchValue } = React.useContext(searchContext)
-    const categoryId = useSelector((state) => state.filter.categoryId)
+    const { categoryId, sort } = useSelector((state) => state.filter)
     const dispatch = useDispatch()
-    const sortType = [
-        { name: 'Популярности', sort: 'rating' },
-        { name: 'Цена по возрастанию', sort: 'price' },
-        { name: 'Цена по убыванию', sort: '-price' },
-        { name: 'Алфавиту', sort: 'title' },
-    ]
-    const [sortBy, setSortBy] = React.useState({
-        name: 'Популярности',
-        sort: 'rating',
-    })
+    console.log(sort)
     useEffect(() => {
         setIsLoading(true)
-        const order = sortBy.sort.includes('-') ? 'desc' : 'asc'
+        const order = sort.sort.includes('-') ? 'desc' : 'asc'
         const category = categoryId === 0 ? '' : '&category=' + categoryId
         const search = searchValue ? `&search=${searchValue}` : ''
         fetch(
             `https://6449088db88a78a8f0fb1930.mockapi.io/Items?page=${
                 currentPage + 1
-            }&limit=4${category}&sortBy=${sortBy.sort.replace('-', '')}&order=${order}${search}`,
+            }&limit=4${category}&sortBy=${sort.sort.replace('-', '')}&order=${order}${search}`,
         )
             .then((response) => {
                 return response.json()
@@ -43,8 +34,7 @@ const Home = () => {
                 setIsLoading(false)
             })
         window.scrollTo(0, 0)
-        console.log(pizzas)
-    }, [searchValue, categoryId, sortBy, currentPage])
+    }, [searchValue, categoryId, sort, currentPage])
 
     const skeletons = [...new Array(6)].map((_, index) => <PizzaBlockSkeleton key={index} />)
     const PizzaItems = pizzas.map((pizza) => {
@@ -59,7 +49,7 @@ const Home = () => {
             <div className="container">
                 <div className="content__top">
                     <Categories value={categoryId} changeCategory={changeCategory} />
-                    <Sort sortType={sortType} sortBy={sortBy} setSortBy={(i) => setSortBy(i)} />
+                    <Sort sort={sort} dispatch={dispatch} />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">{isLoading ? skeletons : PizzaItems}</div>

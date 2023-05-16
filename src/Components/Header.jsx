@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import logoSvg from '../assets/img/pizza-logo.svg'
 import Search from './Search/Search'
+
 const Header = ({ searchValue, setSearchValue }) => {
-    console.log(searchValue)
     return (
         <div className="header">
             <div className="container">

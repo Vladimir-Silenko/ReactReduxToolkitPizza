@@ -1,11 +1,22 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-const Sort = ({ sortBy, setSortBy, sortType }) => {
+import { setSortType } from '../redux/slices/FilterSlice'
+
+const sortType = [
+    { name: 'Популярности', sort: 'rating' },
+    { name: 'Цена по возрастанию', sort: 'price' },
+    { name: 'Цена по убыванию', sort: '-price' },
+    { name: 'Алфавиту', sort: 'title' },
+]
+
+const Sort = ({ dispatch, sort }) => {
     const [visible, setVisible] = React.useState(false)
+
     const Sorter = (i) => {
-        setSortBy(sortType[i])
+        dispatch(setSortType(sortType[i]))
+        console.log(sortType[i])
         setVisible(false)
     }
+
     return (
         <div className="sort">
             <div className="sort__label">
@@ -22,7 +33,7 @@ const Sort = ({ sortBy, setSortBy, sortType }) => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setVisible(!visible)}>{sortBy.name}</span>
+                <span onClick={() => setVisible(!visible)}>{sort.name}</span>
             </div>
             {visible && (
                 <div className="sort__popup">
@@ -32,7 +43,7 @@ const Sort = ({ sortBy, setSortBy, sortType }) => {
                                 <li
                                     key={item.name}
                                     onClick={() => Sorter(index)}
-                                    className={sortBy === item.name ? 'active' : ''}>
+                                    className={sort.name === item.name ? 'active' : ''}>
                                     {item.name}
                                 </li>
                             )
