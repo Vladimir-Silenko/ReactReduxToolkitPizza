@@ -8,6 +8,7 @@ import Paginator from '../Components/Paginator/Paginator'
 import { searchContext } from '../App'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCategoryId } from '../redux/slices/FilterSlice'
+import axios from 'axios'
 const Home = () => {
     const [pizzas, setPizzas] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -15,22 +16,21 @@ const Home = () => {
     const { searchValue } = React.useContext(searchContext)
     const { categoryId, sort } = useSelector((state) => state.filter)
     const dispatch = useDispatch()
-    console.log(sort)
+
     useEffect(() => {
         setIsLoading(true)
         const order = sort.sort.includes('-') ? 'desc' : 'asc'
         const category = categoryId === 0 ? '' : '&category=' + categoryId
         const search = searchValue ? `&search=${searchValue}` : ''
-        fetch(
-            `https://6449088db88a78a8f0fb1930.mockapi.io/Items?page=${
-                currentPage + 1
-            }&limit=4${category}&sortBy=${sort.sort.replace('-', '')}&order=${order}${search}`,
-        )
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                setPizzas(data)
+
+        axios
+            .get(
+                `https://6449088db88a78a8f0fb1930.mockapi.io/Items?page=${
+                    currentPage + 1
+                }&limit=4${category}&sortBy=${sort.sort.replace('-', '')}&order=${order}${search}`,
+            )
+            .then((res) => {
+                setPizzas(res.data)
                 setIsLoading(false)
             })
         window.scrollTo(0, 0)
