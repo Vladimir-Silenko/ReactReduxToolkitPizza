@@ -7,14 +7,14 @@ import PizzaBlockSkeleton from '../Components/PizzaBlock/PizzaBlockSkeleton'
 import Paginator from '../Components/Paginator/Paginator'
 import { searchContext } from '../App'
 import { useSelector, useDispatch } from 'react-redux'
-import { setCategoryId } from '../redux/slices/FilterSlice'
+import { setCategoryId, setCurrentPage } from '../redux/slices/FilterSlice'
 import axios from 'axios'
 const Home = () => {
     const [pizzas, setPizzas] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-    const [currentPage, setCurrentPage] = useState(0)
+    // const [currentPage, setCurrentPage] = useState(0)
     const { searchValue } = React.useContext(searchContext)
-    const { categoryId, sort } = useSelector((state) => state.filter)
+    const { categoryId, sort, currentPage } = useSelector((state) => state.filter)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -44,6 +44,9 @@ const Home = () => {
     const changeCategory = (id) => {
         dispatch(setCategoryId(id))
     }
+    const changePage = (page) => {
+        dispatch(setCurrentPage(page))
+    }
     return (
         <div className="content">
             <div className="container">
@@ -54,7 +57,7 @@ const Home = () => {
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">{isLoading ? skeletons : PizzaItems}</div>
             </div>
-            <Paginator setCurrentPage={setCurrentPage} />
+            <Paginator changePage={changePage} />
         </div>
     )
 }

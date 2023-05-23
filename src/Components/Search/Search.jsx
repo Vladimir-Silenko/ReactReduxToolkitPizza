@@ -8,14 +8,14 @@ const Search = () => {
     const inputRef = React.useRef()
 
     const onClear = () => {
+        setValue('')
         setSearchValue('')
         inputRef.current.focus()
     }
     const updateSearchValue = React.useCallback(
         debounce((str) => {
-            console.log(str)
             setSearchValue(str)
-        }, 250),
+        }, 500),
         [],
     )
     const changeInput = (event) => {
