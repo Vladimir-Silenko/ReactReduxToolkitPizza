@@ -1,7 +1,7 @@
 import React from 'react'
 import { setSortType } from '../redux/slices/FilterSlice'
 
-const sortType = [
+export const sortType = [
     { name: 'Популярности', sort: 'rating' },
     { name: 'Цена по возрастанию', sort: 'price' },
     { name: 'Цена по убыванию', sort: '-price' },
