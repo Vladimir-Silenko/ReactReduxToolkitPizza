@@ -1,6 +1,7 @@
 import React from 'react'
+import { addItem, setTotalPrice } from '../../redux/slices/CartSlice'
 
-const PizzaBlock = ({ types, sizes, price, title, imageUrl, id }) => {
+const PizzaBlock = ({ types, sizes, price, title, imageUrl, pizza, dispatch }) => {
     const [count, setCount] = React.useState(0)
     const [activeSize, setActiveSize] = React.useState(0)
     const [activeType, setActiveType] = React.useState(0)
@@ -39,7 +40,11 @@ const PizzaBlock = ({ types, sizes, price, title, imageUrl, id }) => {
                 <div className="pizza-block__bottom">
                     <div className="pizza-block__price">от {price} ₽</div>
                     <div
-                        onClick={() => setCount(count + 1)}
+                        onClick={() => {
+                            setCount(count + 1)
+                            dispatch(addItem(pizza))
+                            dispatch(setTotalPrice())
+                        }}
                         className="button button--outline button--add">
                         <svg
                             width="12"

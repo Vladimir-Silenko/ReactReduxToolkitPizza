@@ -14,11 +14,10 @@ const FilterSlice = createSlice({
     reducers: {
         setCategoryId(state, action) {
             state.categoryId = action.payload
-            if (state.categoryId === action.payload) console.log('correct')
+            if (state.categoryId === action.payload) console.log(action.payload)
         },
         setSortType(state, action) {
             state.sort = action.payload
-            console.log(action.payload)
         },
         setCurrentPage(state, action) {
             state.currentPage = action.payload

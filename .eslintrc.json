@@ -1,1 +1,12 @@
-{ "env": { "jest/globals": true } }
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "es2021": true,
+        "jest": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        // your rules configuration
+    }
+}
