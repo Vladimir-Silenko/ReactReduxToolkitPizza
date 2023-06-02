@@ -71,6 +71,7 @@ const Home = () => {
 
     const skeletons = [...new Array(6)].map((_, index) => <PizzaBlockSkeleton key={index} />)
     const PizzaItems = pizzas.map((pizza) => {
+        // console.log(pizza)
         return <PizzaBlock pizza={pizza} dispatch={dispatch} key={pizza.id} {...pizza} />
     })
 

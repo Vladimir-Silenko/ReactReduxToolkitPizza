@@ -1,11 +1,29 @@
 import React from 'react'
 import { addItem, setTotalPrice } from '../../redux/slices/CartSlice'
+import { useSelector } from 'react-redux'
 
-const PizzaBlock = ({ types, sizes, price, title, imageUrl, pizza, dispatch }) => {
-    const [count, setCount] = React.useState(0)
+const PizzaBlock = ({ types, sizes, price, title, imageUrl, dispatch, id }) => {
     const [activeSize, setActiveSize] = React.useState(0)
+    console.log(sizes)
     const [activeType, setActiveType] = React.useState(0)
     const doughTypes = ['Тонкое', 'Традиционное']
+    const cartItem = useSelector((state) => state.cart.items.find((obj) => id === obj.id))
+    const addedAmmount = cartItem ? cartItem.ammount : 0
+    const onClickAddItem = () => {
+        const item = {
+            imageUrl,
+            price,
+            title,
+            id,
+            type: doughTypes[activeType],
+            sizes,
+            size: activeSize,
+            ammount: 1,
+        }
+        dispatch(addItem(item))
+        dispatch(setTotalPrice())
+    }
+
     return (
         <div className="pizza-block-wrapper">
             <div className="pizza-block">
@@ -41,9 +59,7 @@ const PizzaBlock = ({ types, sizes, price, title, imageUrl, pizza, dispatch }) =
                     <div className="pizza-block__price">от {price} ₽</div>
                     <div
                         onClick={() => {
-                            setCount(count + 1)
-                            dispatch(addItem(pizza))
-                            dispatch(setTotalPrice())
+                            onClickAddItem()
                         }}
                         className="button button--outline button--add">
                         <svg
@@ -58,7 +74,7 @@ const PizzaBlock = ({ types, sizes, price, title, imageUrl, pizza, dispatch }) =
                             />
                         </svg>
                         <span>Добавить</span>
-                        <i>{count}</i>
+                        {addedAmmount > 0 && <i>{addedAmmount}</i>}
                     </div>
                 </div>
             </div>
