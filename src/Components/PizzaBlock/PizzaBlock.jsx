@@ -1,5 +1,5 @@
 import React from 'react'
-import { addItem, setTotalPrice } from '../../redux/slices/CartSlice'
+import { addItem, setTotalCount, setTotalPrice } from '../../redux/slices/CartSlice'
 import { useSelector } from 'react-redux'
 
 const PizzaBlock = ({ types, sizes, price, title, imageUrl, dispatch, id }) => {
@@ -22,6 +22,7 @@ const PizzaBlock = ({ types, sizes, price, title, imageUrl, dispatch, id }) => {
         }
         dispatch(addItem(item))
         dispatch(setTotalPrice())
+        dispatch(setTotalCount())
     }
 
     return (

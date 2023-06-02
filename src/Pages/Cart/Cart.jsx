@@ -1,10 +1,12 @@
 import React from 'react'
 import styles from './Cart.module.scss'
 import { NavLink } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { clearCart, setTotalPrice } from '../../redux/slices/CartSlice'
 import CartItem from '../../Components/CartItem'
+import { CartEmpty } from '../../Components/CartEmty'
 const Cart = ({ items, totalPrice }) => {
+    const { totalCount } = useSelector((state) => state.cart)
     const dispatch = useDispatch()
     const Clear = () => {
         if (window.confirm('Вы уверены что хотите очистить корзину?')) {
@@ -12,6 +14,7 @@ const Cart = ({ items, totalPrice }) => {
             dispatch(setTotalPrice(0))
         }
     }
+    if (!totalPrice) return <CartEmpty />
     return (
         <div className={styles.container}>
             <div className="wrapper">
@@ -99,7 +102,7 @@ const Cart = ({ items, totalPrice }) => {
                                 <div className="cart__bottom-details">
                                     <span>
                                         {' '}
-                                        Всего пицц: <b>{items.length} шт.</b>{' '}
+                                        Всего пицц: <b>{totalCount} шт.</b>{' '}
                                     </span>
                                     <span>
                                         {' '}
