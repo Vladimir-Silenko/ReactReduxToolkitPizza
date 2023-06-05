@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './Cart.module.scss'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearCart, setTotalPrice } from '../../redux/slices/CartSlice'
+import { clearCart, setTotalCount, setTotalPrice } from '../../redux/slices/CartSlice'
 import CartItem from '../../Components/CartItem'
 import { CartEmpty } from '../../Components/CartEmty'
 const Cart = ({ items, totalPrice }) => {
@@ -12,9 +12,10 @@ const Cart = ({ items, totalPrice }) => {
         if (window.confirm('Вы уверены что хотите очистить корзину?')) {
             dispatch(clearCart())
             dispatch(setTotalPrice(0))
+            dispatch(setTotalCount(0))
         }
     }
-    if (!totalPrice) return <CartEmpty />
+    if (!totalCount) return <CartEmpty />
     return (
         <div className={styles.container}>
             <div className="wrapper">

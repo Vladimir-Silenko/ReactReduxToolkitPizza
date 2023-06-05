@@ -22,22 +22,20 @@ const Home = () => {
     const dispatch = useDispatch()
     const isSearch = React.useRef(false)
     const isMounted = React.useRef(false)
-    const fetchPizzas = () => {
+    const fetchPizzas = async () => {
         setIsLoading(true)
         const category = categoryId > 0 ? `category=${categoryId}` : ''
         const search = searchValue ? `&search=${searchValue}` : ''
         const order = sort.sort.includes('-') ? 'desc' : 'asc'
-
-        axios
+        const response = await axios
             .get(
-                `https://6449088db88a78a8f0fb1930.mockapi.io/Items?page=${
+                `https:// 6449088db88a78a8f0fb1930.mockapi.io/Items?page=${
                     currentPage + 1
                 }&limit=4&sortBy=${sort.sort.replace('-', '')}&order=${order}${search}&${category}`,
             )
-            .then((res) => {
-                setPizzas(res.data)
-                setIsLoading(false)
-            })
+            .catch((err) => console.log(err, 'Axios error'))
+        setPizzas(response.data)
+        setIsLoading(false)
     }
     // если был первый рендер, то проверяем url параметры, и сохраняем их в редакс
     useEffect(() => {

@@ -1,8 +1,15 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { removeItem, setTotalPrice, decrementItems, addItem } from '../redux/slices/CartSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+    removeItem,
+    setTotalPrice,
+    decrementItems,
+    addItem,
+    setTotalCount,
+} from '../redux/slices/CartSlice'
 
 const CartItem = ({ imageUrl, title, id, price, totalPrice, ammount, type, size, sizes }) => {
+    const itemsLength = useSelector((state) => state.cart.items.length)
     const dispatch = useDispatch()
     const deleteItem = (id, price) => {
         dispatch(removeItem(id))
@@ -13,6 +20,8 @@ const CartItem = ({ imageUrl, title, id, price, totalPrice, ammount, type, size,
     }
     const onClickMinusItem = (count, id) => {
         count > 1 ? dispatch(decrementItems(id)) : dispatch(removeItem(id))
+        dispatch(setTotalPrice(totalPrice - price / count))
+        dispatch(setTotalCount(itemsLength - 1))
     }
     return (
         <div>
