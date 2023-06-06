@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 
 const PizzaBlock = ({ types, sizes, price, title, imageUrl, dispatch, id }) => {
     const [activeSize, setActiveSize] = React.useState(0)
-    console.log(sizes)
     const [activeType, setActiveType] = React.useState(0)
     const doughTypes = ['Тонкое', 'Традиционное']
     const cartItem = useSelector((state) => state.cart.items.find((obj) => id === obj.id))

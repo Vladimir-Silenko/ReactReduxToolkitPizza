@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 import qs from 'qs'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,29 +12,28 @@ import PizzaBlockSkeleton from '../Components/PizzaBlock/PizzaBlockSkeleton'
 import Paginator from '../Components/Paginator/Paginator'
 import { searchContext } from '../App'
 import { useNavigate } from 'react-router-dom'
+import { fetchPizzas } from '../redux/slices/PizzaSlice'
 const Home = () => {
-    const [pizzas, setPizzas] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    const { pizzas, status } = useSelector((state) => state.pizza)
+    console.log(status)
+    // const [isLoading, setIsLoading] = useState(true)
     const { searchValue } = React.useContext(searchContext)
     const { categoryId, sort, currentPage } = useSelector((state) => state.filter)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const isSearch = React.useRef(false)
     const isMounted = React.useRef(false)
-    const fetchPizzas = async () => {
-        setIsLoading(true)
+    const getPizzas = async () => {
+        // setIsLoading(true)
         const category = categoryId > 0 ? `category=${categoryId}` : ''
         const search = searchValue ? `&search=${searchValue}` : ''
         const order = sort.sort.includes('-') ? 'desc' : 'asc'
-        const response = await axios
-            .get(
-                `https:// 6449088db88a78a8f0fb1930.mockapi.io/Items?page=${
-                    currentPage + 1
-                }&limit=4&sortBy=${sort.sort.replace('-', '')}&order=${order}${search}&${category}`,
-            )
-            .catch((err) => console.log(err, 'Axios error'))
-        setPizzas(response.data)
-        setIsLoading(false)
+        try {
+            dispatch(fetchPizzas({ currentPage, search, order, category, sort }))
+            // setIsLoading(false)
+        } catch (error) {
+            console.log(error)
+        }
     }
     // если был первый рендер, то проверяем url параметры, и сохраняем их в редакс
     useEffect(() => {
@@ -50,7 +48,7 @@ const Home = () => {
     useEffect(() => {
         window.scrollTo(0, 0)
         if (!isSearch.current) {
-            fetchPizzas()
+            getPizzas()
         }
         isSearch.current = false
     }, [searchValue, categoryId, sort, currentPage])
@@ -69,7 +67,6 @@ const Home = () => {
 
     const skeletons = [...new Array(6)].map((_, index) => <PizzaBlockSkeleton key={index} />)
     const PizzaItems = pizzas.map((pizza) => {
-        // console.log(pizza)
         return <PizzaBlock pizza={pizza} dispatch={dispatch} key={pizza.id} {...pizza} />
     })
 
@@ -88,7 +85,9 @@ const Home = () => {
                     <Sort sort={sort} dispatch={dispatch} />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
-                <div className="content__items">{isLoading ? skeletons : PizzaItems}</div>
+                <div className="content__items">
+                    {status === 'loading' ? skeletons : PizzaItems}
+                </div>
             </div>
             <Paginator currentPage={currentPage} changePage={changePage} />
         </div>
