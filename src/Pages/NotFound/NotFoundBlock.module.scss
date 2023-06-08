@@ -9,6 +9,8 @@
     text-align: center;
 }
 .container {
+    grid-column-start: 1;
+    grid-column-end: 5;
     width: 100%;
     display: flex;
     flex-direction: column;

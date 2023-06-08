@@ -8,26 +8,23 @@ import NotFound from './Pages/NotFound/NotFoundBlock'
 import Cart from './Pages/Cart/Cart'
 import React from 'react'
 import { useSelector } from 'react-redux'
+import FullPizza from './Pages/fullPizza/FullPizza'
 export const searchContext = React.createContext()
 function App() {
-    const [searchValue, setSearchValue] = React.useState('')
     const { items, totalPrice } = useSelector((state) => state.cart)
+
     return (
-        <searchContext.Provider value={{ searchValue, setSearchValue }}>
-            <div className="App">
-                <div className="wrapper">
-                    <Header />
-                    <Routes>
-                        <Route path="*" element={<NotFound />} />
-                        <Route
-                            path="cart"
-                            element={<Cart totalPrice={totalPrice} items={items} />}
-                        />
-                        <Route path={'/'} element={<Home searchValue={searchValue} />} />
-                    </Routes>
-                </div>
+        <div className="App">
+            <div className="wrapper">
+                <Header />
+                <Routes>
+                    <Route path="*" element={<NotFound />} />
+                    <Route path="cart" element={<Cart totalPrice={totalPrice} items={items} />} />
+                    <Route path={'/'} element={<Home />} />
+                    <Route path={`fullPizza/:id`} element={<FullPizza />} />
+                </Routes>
             </div>
-        </searchContext.Provider>
+        </div>
     )
 }
 

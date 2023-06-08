@@ -1,6 +1,8 @@
 import React from 'react'
 import { addItem, setTotalCount, setTotalPrice } from '../../redux/slices/CartSlice'
 import { useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
+import { clearSelectedItem, fetchFullPizza } from '../../redux/slices/PizzaSlice'
 
 const PizzaBlock = ({ types, sizes, price, title, imageUrl, dispatch, id }) => {
     const [activeSize, setActiveSize] = React.useState(0)
@@ -23,11 +25,16 @@ const PizzaBlock = ({ types, sizes, price, title, imageUrl, dispatch, id }) => {
         dispatch(setTotalPrice())
         dispatch(setTotalCount())
     }
-
+    const onClickOpenPizza = (id) => {
+        dispatch(clearSelectedItem())
+        dispatch(fetchFullPizza(id))
+    }
     return (
         <div className="pizza-block-wrapper">
             <div className="pizza-block">
-                <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+                <NavLink onClick={() => onClickOpenPizza(id)} to={`fullPizza/${id}`}>
+                    <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+                </NavLink>
                 <h4 className="pizza-block__title">{title}</h4>
                 <div className="pizza-block__selector">
                     <ul>

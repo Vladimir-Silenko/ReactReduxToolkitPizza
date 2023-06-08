@@ -1,39 +1,29 @@
 import React from 'react'
 import qs from 'qs'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/FilterSlice'
-
 import { sortType } from '../Components/Sort'
 import Sort from '../Components/Sort'
 import Categories from '../Components/Categories'
 import PizzaBlock from '../Components/PizzaBlock/PizzaBlock'
 import PizzaBlockSkeleton from '../Components/PizzaBlock/PizzaBlockSkeleton'
 import Paginator from '../Components/Paginator/Paginator'
-import { searchContext } from '../App'
 import { useNavigate } from 'react-router-dom'
 import { fetchPizzas } from '../redux/slices/PizzaSlice'
+import NotFound from './NotFound/NotFoundBlock'
 const Home = () => {
     const { pizzas, status } = useSelector((state) => state.pizza)
-    console.log(status)
-    // const [isLoading, setIsLoading] = useState(true)
-    const { searchValue } = React.useContext(searchContext)
-    const { categoryId, sort, currentPage } = useSelector((state) => state.filter)
+    const { categoryId, sort, currentPage, searchValue } = useSelector((state) => state.filter)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const isSearch = React.useRef(false)
     const isMounted = React.useRef(false)
     const getPizzas = async () => {
-        // setIsLoading(true)
         const category = categoryId > 0 ? `category=${categoryId}` : ''
-        const search = searchValue ? `&search=${searchValue}` : ''
+        const search = searchValue ? `search=${searchValue}` : ''
         const order = sort.sort.includes('-') ? 'desc' : 'asc'
-        try {
-            dispatch(fetchPizzas({ currentPage, search, order, category, sort }))
-            // setIsLoading(false)
-        } catch (error) {
-            console.log(error)
-        }
+        dispatch(fetchPizzas({ currentPage, search, order, category, sort }))
     }
     // если был первый рендер, то проверяем url параметры, и сохраняем их в редакс
     useEffect(() => {
@@ -86,7 +76,13 @@ const Home = () => {
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">
-                    {status === 'loading' ? skeletons : PizzaItems}
+                    {status === 'loading' ? (
+                        skeletons
+                    ) : status === 'error' ? (
+                        <NotFound />
+                    ) : (
+                        PizzaItems
+                    )}
                 </div>
             </div>
             <Paginator currentPage={currentPage} changePage={changePage} />
