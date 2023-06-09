@@ -9,9 +9,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import FullPizza from './Pages/fullPizza/FullPizza'
 import MainLayout from './Components/MainLayout'
-export const searchContext = React.createContext()
 function App() {
-    const { items, totalPrice } = useSelector((state) => state.cart)
+    const { items, totalPrice } = useSelector((state: any) => state.cart)
 
     return (
         <div className="App">

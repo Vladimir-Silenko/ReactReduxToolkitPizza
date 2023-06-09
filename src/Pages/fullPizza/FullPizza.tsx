@@ -1,17 +1,13 @@
 // import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-// import { useParams } from 'react-router-dom'
+import { RootState } from '../../redux/store'
 
-const FullPizza = () => {
-    // const { id } = useParams()
-    const { selectedItem } = useSelector((state) => state.pizza)
-    // const getFullPizza = async (id) => {
-    //     const { data } = await axios.get(`https://6449088db88a78a8f0fb1930.mockapi.io/Items/${id}`)
-    // }
+const FullPizza: React.FC = () => {
+    const { selectedItem } = useSelector((state: RootState) => state.pizza)
     console.log(selectedItem)
     useEffect(() => {}, [])
-    if (!selectedItem.id) return 'Загрузка...'
+    if (!selectedItem) return <div>Загрузка...</div>
     return (
         <div>
             <h2>{selectedItem.title}</h2>
