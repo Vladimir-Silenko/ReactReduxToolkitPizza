@@ -5,8 +5,6 @@ import { RootState } from '../../redux/store'
 
 const FullPizza: React.FC = () => {
     const { selectedItem } = useSelector((state: RootState) => state.pizza)
-    console.log(selectedItem)
-    useEffect(() => {}, [])
     if (!selectedItem) return <div>Загрузка...</div>
     return (
         <div>

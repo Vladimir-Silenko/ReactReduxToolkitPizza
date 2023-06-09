@@ -5,7 +5,7 @@ export type PizzaItem = {
     id: string
     imageUrl: string
     title: string
-    types: Array<number>
+    types: Array<any>
     sizes: Array<number>
     price: number
     category: number
@@ -34,10 +34,13 @@ export const fetchPizzas = createAsyncThunk<PizzaItem[], fetchPizzasParams>(
     },
 )
 
-export const fetchFullPizza = createAsyncThunk<any, number>('pizza/fetchFullPizza', async (id) => {
-    const { data } = await axios.get(`https://6449088db88a78a8f0fb1930.mockapi.io/Items/${id}`)
-    return data
-})
+export const fetchFullPizza = createAsyncThunk<any, string | null>(
+    'pizza/fetchFullPizza',
+    async (id) => {
+        const { data } = await axios.get(`https://6449088db88a78a8f0fb1930.mockapi.io/Items/${id}`)
+        return data
+    },
+)
 export type pizzaStateType = {
     pizzas: Array<PizzaItem>
     status: string

@@ -1,14 +1,19 @@
 import React from 'react'
 import { addItem, setTotalCount, setTotalPrice } from '../../redux/slices/CartSlice'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { clearSelectedItem, fetchFullPizza } from '../../redux/slices/PizzaSlice'
+import { PizzaItem, clearSelectedItem, fetchFullPizza } from '../../redux/slices/PizzaSlice'
+import { RootState } from '../../redux/store'
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit'
 
-const PizzaBlock = ({ types, sizes, price, title, imageUrl, dispatch, id }) => {
+const PizzaBlock: React.FC<PizzaItem> = ({ types, sizes, price, title, imageUrl, id }) => {
+    const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch()
     const [activeSize, setActiveSize] = React.useState(0)
     const [activeType, setActiveType] = React.useState(0)
-    const doughTypes = ['Тонкое', 'Традиционное']
-    const cartItem = useSelector((state) => state.cart.items.find((obj) => id === obj.id))
+    const doughTypes: Array<string> = ['Тонкое', 'Традиционное']
+    const cartItem = useSelector((state: RootState) =>
+        state.cart.items.find((obj: PizzaItem) => id === obj.id),
+    )
     const addedAmmount = cartItem ? cartItem.ammount : 0
     const onClickAddItem = () => {
         const item = {
@@ -25,7 +30,7 @@ const PizzaBlock = ({ types, sizes, price, title, imageUrl, dispatch, id }) => {
         dispatch(setTotalPrice())
         dispatch(setTotalCount())
     }
-    const onClickOpenPizza = (id) => {
+    const onClickOpenPizza = (id: string | null) => {
         dispatch(clearSelectedItem())
         dispatch(fetchFullPizza(id))
     }
