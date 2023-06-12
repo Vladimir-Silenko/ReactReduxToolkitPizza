@@ -11,7 +11,7 @@ import PizzaBlockSkeleton from '../Components/PizzaBlock/PizzaBlockSkeleton'
 import Paginator from '../Components/Paginator/Paginator'
 import { useNavigate } from 'react-router-dom'
 import { fetchPizzas } from '../redux/slices/PizzaSlice'
-import NotFound from './NotFound/NotFoundBlock'
+import NotFound from './NotFound/NotFound'
 const Home = () => {
     const { pizzas, status } = useSelector((state) => state.pizza)
     const { categoryId, sort, currentPage, searchValue } = useSelector((state) => state.filter)

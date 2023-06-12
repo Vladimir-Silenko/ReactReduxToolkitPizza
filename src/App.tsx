@@ -3,7 +3,7 @@ import './scss/app.scss'
 
 import { Route, Routes } from 'react-router-dom'
 import Home from './Pages/Home'
-import NotFound from './Pages/NotFound/NotFoundBlock'
+import NotFound from './Pages/NotFound/NotFound'
 import Cart from './Pages/Cart/Cart'
 import React from 'react'
 import { useSelector } from 'react-redux'
