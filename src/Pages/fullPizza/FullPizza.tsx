@@ -1,7 +1,7 @@
 // import axios from 'axios'
+import { RootState } from '@reduxjs/toolkit'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../redux/store'
 
 const FullPizza: React.FC = () => {
     const { selectedItem } = useSelector((state: RootState) => state.pizza)

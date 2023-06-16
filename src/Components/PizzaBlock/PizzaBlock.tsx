@@ -3,8 +3,8 @@ import { addItem, setTotalCount, setTotalPrice } from '../../redux/slices/CartSl
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { PizzaItem, clearSelectedItem, fetchFullPizza } from '../../redux/slices/PizzaSlice'
-import { RootState } from '../../redux/store'
-import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit'
+// import { RootState } from '../../redux/store'
+import { AnyAction, RootState, ThunkDispatch } from '@reduxjs/toolkit'
 
 const PizzaBlock: React.FC<PizzaItem> = ({ types, sizes, price, title, imageUrl, id }) => {
     const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch()

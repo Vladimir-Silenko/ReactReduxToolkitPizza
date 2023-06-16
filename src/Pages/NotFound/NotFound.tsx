@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './NotFound.module.scss'
-const NotFound = () => {
+const NotFound: React.FC = () => {
     return (
         <div className={styles.container}>
             <h1 className={styles.NotFound}>404 NOT FOUND</h1>

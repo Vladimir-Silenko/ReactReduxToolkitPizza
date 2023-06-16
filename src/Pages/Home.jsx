@@ -72,7 +72,7 @@ const Home = () => {
             <div className="container">
                 <div className="content__top">
                     <Categories value={categoryId} changeCategory={changeCategory} />
-                    <Sort sort={sort} dispatch={dispatch} />
+                    <Sort sort={sort} />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">
