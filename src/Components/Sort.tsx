@@ -1,6 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { Dispatch, useEffect } from 'react'
 import { setSortType } from '../redux/slices/FilterSlice'
-
+import { AnyAction, RootState, ThunkDispatch } from '@reduxjs/toolkit'
+import { useDispatch } from 'react-redux'
+type typeOfSort = {
+    sort: { name: string; sort: string }
+}
 export const sortType = [
     { name: 'Популярности', sort: 'rating' },
     { name: 'Цена по возрастанию', sort: 'price' },
@@ -8,16 +12,17 @@ export const sortType = [
     { name: 'Алфавиту', sort: 'title' },
 ]
 
-const Sort = ({ dispatch, sort }) => {
+const Sort: React.FC<typeOfSort> = ({ sort }) => {
     const [visible, setVisible] = React.useState(false)
-    const sortRef = React.useRef()
-    const Sorter = (i) => {
+    const sortRef = React.useRef<HTMLDivElement>(null)
+    const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch()
+    const Sorter = (i: number) => {
         dispatch(setSortType(sortType[i]))
         setVisible(false)
     }
     useEffect(() => {
-        const handleOuterClick = (event) => {
-            if (!event.composedPath().includes(sortRef.current)) {
+        const handleOuterClick = (event: MouseEvent) => {
+            if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
                 setVisible(false)
             }
         }

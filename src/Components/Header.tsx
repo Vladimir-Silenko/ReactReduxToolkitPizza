@@ -3,12 +3,8 @@ import logoSvg from '../assets/img/pizza-logo.svg'
 import Search from './Search/Search'
 import { useSelector } from 'react-redux'
 import { RootState } from '@reduxjs/toolkit'
-// import { RootState } from '../redux/store'
-type HeaderPropsType = {
-    searchValue: string
-    setSearchValue: (value: string) => void
-}
-const Header: React.FC<HeaderPropsType> = ({ searchValue, setSearchValue }) => {
+
+const Header: React.FC = () => {
     const { totalPrice, totalCount } = useSelector((state: RootState) => state.cart)
     const { pathname } = useLocation()
     return (
