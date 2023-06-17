@@ -6,22 +6,38 @@ import {
     decrementItems,
     addItem,
     setTotalCount,
+    CartItemType,
 } from '../redux/slices/CartSlice'
+import { RootState } from '@reduxjs/toolkit'
 
-const CartItem = ({ imageUrl, title, id, price, totalPrice, ammount, type, size, sizes }) => {
-    const itemsLength = useSelector((state) => state.cart.items.length)
+type CartItemPropsType = CartItemType & {
+    totalPrice: number
+}
+
+const CartItem: React.FC<CartItemPropsType> = ({
+    imageUrl,
+    title,
+    id,
+    price,
+    totalPrice,
+    ammount,
+    type,
+    size,
+    sizes,
+}) => {
+    const itemsLength = useSelector((state: RootState) => state.cart.items.length)
     const dispatch = useDispatch()
-    const deleteItem = (id, price) => {
+    const deleteItem = (id: string, price: number) => {
         dispatch(removeItem(id))
-        dispatch(setTotalPrice(totalPrice - price))
+        dispatch(setTotalPrice())
     }
-    const onClickAddItem = (id) => {
+    const onClickAddItem = (id: string) => {
         dispatch(addItem({ id }))
     }
-    const onClickMinusItem = (count, id) => {
+    const onClickMinusItem = (count: number, id: string) => {
         count > 1 ? dispatch(decrementItems(id)) : dispatch(removeItem(id))
-        dispatch(setTotalPrice(totalPrice - price / count))
-        dispatch(setTotalCount(itemsLength - 1))
+        dispatch(setTotalPrice())
+        dispatch(setTotalCount())
     }
     return (
         <div>

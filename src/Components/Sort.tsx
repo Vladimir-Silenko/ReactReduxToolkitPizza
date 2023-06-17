@@ -1,4 +1,4 @@
-import React, { Dispatch, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { setSortType } from '../redux/slices/FilterSlice'
 import { AnyAction, RootState, ThunkDispatch } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'

@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './Cart.module.scss'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearCart, setTotalCount, setTotalPrice } from '../../redux/slices/CartSlice'
+import { clearCart, setTotalCount, setTotalPrice } from '../../redux/slices/CartSlice.tsx'
 import CartItem from '../../Components/CartItem'
 import { CartEmpty } from '../../Components/CartEmty'
 const Cart = ({ items, totalPrice }) => {
