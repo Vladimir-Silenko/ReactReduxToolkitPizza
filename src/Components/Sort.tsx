@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 type typeOfSort = {
     sort: { name: string; sort: string }
 }
-export const sortType = [
+export const sortType: Array<{ name: string; sort: string }> = [
     { name: 'Популярности', sort: 'rating' },
     { name: 'Цена по возрастанию', sort: 'price' },
     { name: 'Цена по убыванию', sort: '-price' },

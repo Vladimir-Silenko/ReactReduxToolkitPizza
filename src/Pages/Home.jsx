@@ -85,7 +85,7 @@ const Home = () => {
                     )}
                 </div>
             </div>
-            <Paginator currentPage={currentPage} changePage={changePage} />
+            <Paginator changePage={changePage} />
         </div>
     )
 }

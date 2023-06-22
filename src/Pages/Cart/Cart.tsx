@@ -2,17 +2,22 @@ import React from 'react'
 import styles from './Cart.module.scss'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearCart, setTotalCount, setTotalPrice } from '../../redux/slices/CartSlice.tsx'
+import { CartItemType, clearCart, setTotalCount, setTotalPrice } from '../../redux/slices/CartSlice'
 import CartItem from '../../Components/CartItem'
 import { CartEmpty } from '../../Components/CartEmty'
-const Cart = ({ items, totalPrice }) => {
-    const { totalCount } = useSelector((state) => state.cart)
+import { RootState } from '@reduxjs/toolkit'
+type CardPropsType = {
+    items: Array<CartItemType>
+    totalPrice: number
+}
+const Cart: React.FC<CardPropsType> = ({ items, totalPrice }) => {
+    const { totalCount } = useSelector((state: RootState) => state.cart)
     const dispatch = useDispatch()
     const Clear = () => {
         if (window.confirm('Вы уверены что хотите очистить корзину?')) {
             dispatch(clearCart())
-            dispatch(setTotalPrice(0))
-            dispatch(setTotalCount(0))
+            dispatch(setTotalPrice())
+            dispatch(setTotalCount())
         }
     }
     if (!totalCount) return <CartEmpty />

@@ -1,7 +1,10 @@
 import React from 'react'
 import ReactPaginate from 'react-paginate'
 import styles from './Paginator.module.scss'
-const Paginator = ({ changePage }) => {
+type PaginatorPropsType = {
+    changePage: (arg: number) => void
+}
+const Paginator: React.FC<PaginatorPropsType> = ({ changePage }) => {
     return (
         <div>
             <ReactPaginate
