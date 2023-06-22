@@ -10,13 +10,16 @@ import PizzaBlock from '../Components/PizzaBlock/PizzaBlock'
 import PizzaBlockSkeleton from '../Components/PizzaBlock/PizzaBlockSkeleton'
 import Paginator from '../Components/Paginator/Paginator'
 import { useNavigate } from 'react-router-dom'
-import { fetchPizzas } from '../redux/slices/PizzaSlice'
+import { PizzaItem, fetchPizzas } from '../redux/slices/PizzaSlice'
 import NotFound from './NotFound/NotFound'
+import { AnyAction, RootState, ThunkDispatch } from '@reduxjs/toolkit'
 const Home = () => {
-    const { pizzas, status } = useSelector((state) => state.pizza)
-    const { categoryId, sort, currentPage, searchValue } = useSelector((state) => state.filter)
+    const { pizzas, status } = useSelector((state: RootState) => state.pizza)
+    const { categoryId, sort, currentPage, searchValue } = useSelector(
+        (state: RootState) => state.filter,
+    )
     const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const dispatch: ThunkDispatch<RootState, undefined, AnyAction> = useDispatch()
     const isSearch = React.useRef(false)
     const isMounted = React.useRef(false)
     const getPizzas = async () => {
@@ -56,15 +59,15 @@ const Home = () => {
     }, [categoryId, sort, currentPage])
 
     const skeletons = [...new Array(6)].map((_, index) => <PizzaBlockSkeleton key={index} />)
-    const PizzaItems = pizzas.map((pizza) => {
-        return <PizzaBlock pizza={pizza} dispatch={dispatch} key={pizza.id} {...pizza} />
+    const PizzaItems = pizzas.map((pizza: PizzaItem) => {
+        return <PizzaBlock key={pizza.id} {...pizza} />
     })
 
-    const changeCategory = (id) => {
+    const changeCategory = (id: number) => {
         dispatch(setCategoryId(id))
         console.log(id)
     }
-    const changePage = (page) => {
+    const changePage = (page: number) => {
         dispatch(setCurrentPage(page))
     }
     return (

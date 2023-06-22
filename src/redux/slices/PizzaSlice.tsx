@@ -16,7 +16,7 @@ export type fetchPizzasParams = {
     currentPage: number
     search: string
     order: string
-    category: number
+    category: string
     sort: any
 }
 
