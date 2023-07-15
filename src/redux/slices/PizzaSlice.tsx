@@ -1,7 +1,8 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { sortObjectType } from './FilterSlice'
 
-export type PizzaItem = {
+export interface PizzaItem {
     id: string
     imageUrl: string
     title: string
@@ -12,25 +13,30 @@ export type PizzaItem = {
     rating: number
 }
 
-export type fetchPizzasParams = {
+export interface fetchPizzasParams {
     currentPage: number
     search: string
     order: string
     category: string
-    sort: any
+    sort: sortObjectType
 }
 
+export enum Status {
+    LOADING = 'loading',
+    SUCCESS = 'success',
+    ERROR = 'error',
+}
 export const fetchPizzas = createAsyncThunk<PizzaItem[], fetchPizzasParams>(
     'pizza/fetchPizzasStatus',
-    async (params: fetchPizzasParams, thunkApi) => {
+    async (params, thunkApi) => {
         const { currentPage, search, order, category, sort } = params
-        const { data } = await axios.get(
+        const { data } = await axios.get<Array<PizzaItem>>(
             `https://6449088db88a78a8f0fb1930.mockapi.io/Items?page=${
                 currentPage + 1
             }&limit=4&sortBy=${sort.sort.replace('-', '')}&order=${order}&${search}&${category}`,
         )
         if (data.length === 0) console.log(thunkApi.rejectWithValue('No pizzas'))
-        return data
+        return data as Array<PizzaItem>
     },
 )
 
@@ -38,17 +44,17 @@ export const fetchFullPizza = createAsyncThunk<any, string | null>(
     'pizza/fetchFullPizza',
     async (id) => {
         const { data } = await axios.get(`https://6449088db88a78a8f0fb1930.mockapi.io/Items/${id}`)
-        return data
+        return data as PizzaItem
     },
 )
 export type pizzaStateType = {
     pizzas: Array<PizzaItem>
-    status: string
+    status: Status
     selectedItem: PizzaItem | null
 }
 export const initialState: pizzaStateType = {
     pizzas: [],
-    status: '', // loading | success | error
+    status: Status.LOADING, // loading | success | error
     selectedItem: null,
 }
 export const PizzaSlice = createSlice({
@@ -65,20 +71,19 @@ export const PizzaSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchPizzas.pending, (state) => {
-                state.status = 'loading'
+                state.status = Status.LOADING
                 state.pizzas = []
             })
             .addCase(fetchPizzas.fulfilled, (state, action) => {
                 state.pizzas = action.payload
-                state.status = 'success'
+                state.status = Status.SUCCESS
             })
             .addCase(fetchPizzas.rejected, (state) => {
-                state.status = 'error'
+                state.status = Status.ERROR
                 state.pizzas = []
             })
             .addCase(fetchFullPizza.fulfilled, (state, action) => {
                 state.selectedItem = action.payload
-                console.log(state.selectedItem)
             })
     },
 })

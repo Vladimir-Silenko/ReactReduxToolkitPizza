@@ -1,18 +1,21 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import qs from 'qs'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { AnyAction, RootState, ThunkDispatch } from '@reduxjs/toolkit'
+import { useWhyDidYouUpdate } from 'ahooks'
+import { useNavigate } from 'react-router-dom'
 import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/FilterSlice'
+// -----------------------------------------------
 import { sortType } from '../Components/Sort'
 import Sort from '../Components/Sort'
 import Categories from '../Components/Categories'
 import PizzaBlock from '../Components/PizzaBlock/PizzaBlock'
 import PizzaBlockSkeleton from '../Components/PizzaBlock/PizzaBlockSkeleton'
 import Paginator from '../Components/Paginator/Paginator'
-import { useNavigate } from 'react-router-dom'
 import { PizzaItem, fetchPizzas } from '../redux/slices/PizzaSlice'
 import NotFound from './NotFound/NotFound'
-import { AnyAction, RootState, ThunkDispatch } from '@reduxjs/toolkit'
+
 const Home = () => {
     const { pizzas, status } = useSelector((state: RootState) => state.pizza)
     const { categoryId, sort, currentPage, searchValue } = useSelector(
@@ -56,26 +59,31 @@ const Home = () => {
             navigate(`?${queryString}`)
         }
         isMounted.current = true
-    }, [categoryId, sort, currentPage])
+    }, [categoryId, sort])
 
     const skeletons = [...new Array(6)].map((_, index) => <PizzaBlockSkeleton key={index} />)
-    const PizzaItems = pizzas.map((pizza: PizzaItem) => {
-        return <PizzaBlock key={pizza.id} {...pizza} />
-    })
 
-    const changeCategory = (id: number) => {
+    const renderPizzaBlock = useCallback((pizza: PizzaItem) => {
+        return <PizzaBlock key={pizza.id} {...pizza} />
+    }, [])
+
+    const PizzaItems = pizzas.map(renderPizzaBlock)
+
+    const changeCategory = useCallback((id: number) => {
         dispatch(setCategoryId(id))
-        console.log(id)
-    }
+    }, [])
     const changePage = (page: number) => {
         dispatch(setCurrentPage(page))
     }
+    useWhyDidYouUpdate('Categories', { categoryId, changeCategory })
+    // useWhyDidYouUpdate('Sort', { sort })
+
     return (
         <div className="content">
             <div className="container">
                 <div className="content__top">
                     <Categories value={categoryId} changeCategory={changeCategory} />
-                    <Sort sort={sort} />
+                    <Sort />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">

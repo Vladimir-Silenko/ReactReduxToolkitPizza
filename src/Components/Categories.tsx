@@ -1,9 +1,9 @@
 import React from 'react'
-type CategoriesPropsType = {
+export type CategoriesPropsType = {
     value: number
     changeCategory: (arg: number) => void
 }
-const Categories: React.FC<CategoriesPropsType> = ({ value, changeCategory }) => {
+const Categories: React.FC<CategoriesPropsType> = React.memo(({ value, changeCategory }) => {
     const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
     return (
         <div className="categories">
@@ -21,6 +21,6 @@ const Categories: React.FC<CategoriesPropsType> = ({ value, changeCategory }) =>
             </ul>
         </div>
     )
-}
+})
 
 export default Categories

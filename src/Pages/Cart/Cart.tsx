@@ -11,6 +11,7 @@ type CardPropsType = {
     totalPrice: number
 }
 const Cart: React.FC<CardPropsType> = ({ items, totalPrice }) => {
+    console.log('cart-rendered')
     const { totalCount } = useSelector((state: RootState) => state.cart)
     const dispatch = useDispatch()
     const Clear = () => {

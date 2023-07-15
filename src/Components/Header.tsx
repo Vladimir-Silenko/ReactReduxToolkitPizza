@@ -3,10 +3,20 @@ import logoSvg from '../assets/img/pizza-logo.svg'
 import Search from './Search/Search'
 import { useSelector } from 'react-redux'
 import { RootState } from '@reduxjs/toolkit'
+import React, { useEffect } from 'react'
+const Header: React.FC = React.memo(() => {
+    const location = useLocation()
+    const isMounted = React.useRef(false)
+    const { totalPrice, totalCount, items } = useSelector((state: RootState) => state.cart)
+    console.log(items)
+    React.useEffect(() => {
+        if (isMounted.current) {
+            const json = JSON.stringify(items)
+            localStorage.setItem('cart', json)
+        }
+        isMounted.current = true
+    }, [items])
 
-const Header: React.FC = () => {
-    const { totalPrice, totalCount } = useSelector((state: RootState) => state.cart)
-    const { pathname } = useLocation()
     return (
         <div className="header">
             <div className="container">
@@ -21,7 +31,7 @@ const Header: React.FC = () => {
                 </div>
                 <Search />
                 <div className="header__cart">
-                    {pathname !== '/cart' && (
+                    {location.pathname !== '/cart' && (
                         <NavLink to="cart" className="button button--cart">
                             <span>{totalPrice} ₽</span>
                             <div className="button__delimiter"></div>
@@ -53,13 +63,13 @@ const Header: React.FC = () => {
                                     strokeLinejoin="round"
                                 />
                             </svg>
-                            <span>{totalCount}</span>
+                            <span>{items.length}</span>
                         </NavLink>
                     )}
                 </div>
             </div>
         </div>
     )
-}
+})
 
 export default Header
